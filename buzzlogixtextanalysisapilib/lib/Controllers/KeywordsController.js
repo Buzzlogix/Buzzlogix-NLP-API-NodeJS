@@ -8,7 +8,7 @@ var request = require('../Http/Client/RequestClient'),
     configuration = require('../configuration'),
     APIHelper = require('../APIHelper');
 
-var SentimentController = {
+var KeywordsController = {
 
     /**
      * The text should be provided as text/plain in the body
@@ -17,12 +17,12 @@ var SentimentController = {
      *
      * @return {mixed}
      */
-    createReturnEnglishGeneralSentiment : function(body, callback){
+    createReturnEnglishKeywords : function(body, callback){
 
         //prepare query string for API call;
         var baseUri = configuration.BASEURI;
         
-        var queryBuilder = baseUri + "/sentiment";
+        var queryBuilder = baseUri + "/keywords";
         
         //validate and preprocess url
         var queryUrl = APIHelper.cleanUrl(queryBuilder);
@@ -72,12 +72,12 @@ var SentimentController = {
      *
      * @return {mixed}
      */
-    createReturnEnglishGeneralSentimentForm : function(body, callback){
+    createReturnEnglishKeywordsForm : function(body, callback){
 
         //prepare query string for API call;
         var baseUri = configuration.BASEURI;
         
-        var queryBuilder = baseUri + "/sentiment/form";
+        var queryBuilder = baseUri + "/keywords/form";
         
         //validate and preprocess url
         var queryUrl = APIHelper.cleanUrl(queryBuilder);
@@ -121,4 +121,4 @@ var SentimentController = {
 
 };
 
-module.exports = SentimentController;
+module.exports = KeywordsController;

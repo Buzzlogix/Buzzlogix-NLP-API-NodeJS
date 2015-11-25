@@ -1,22 +1,24 @@
 /**
   * @module BuzzlogixTextAnalysisAPILib
   *  
-  * Smart Social Media Management Software and Text Analysis API.
+  * Buzzlogix's Text Analysis API.
   */
 
 var configuration = require('./configuration'),
+    TwittersentimentController = require('./Controllers/TwittersentimentController');
+    KeywordsController = require('./Controllers/KeywordsController');
     ObjectivityController = require('./Controllers/ObjectivityController');
     SentimentController = require('./Controllers/SentimentController');
-    TwittersentimentController = require('./Controllers/TwittersentimentController');
 
 
 function initializer(){}
 
 //Main functional components of BuzzlogixTextAnalysisAPILib
 initializer.configuration = configuration;
+initializer.TwittersentimentController = TwittersentimentController;
+initializer.KeywordsController = KeywordsController;
 initializer.ObjectivityController = ObjectivityController;
 initializer.SentimentController = SentimentController;
-initializer.TwittersentimentController = TwittersentimentController;
 
 //Main Models of BuzzlogixTextAnalysisAPILib
 
