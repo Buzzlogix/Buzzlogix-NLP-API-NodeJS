@@ -5,9 +5,9 @@
   */
 
 var configuration = require('./configuration'),
-    TwittersentimentController = require('./Controllers/TwittersentimentController');
-    KeywordsController = require('./Controllers/KeywordsController');
-    ObjectivityController = require('./Controllers/ObjectivityController');
+    TwittersentimentController = require('./Controllers/TwittersentimentController'),
+    KeywordsController = require('./Controllers/KeywordsController'),
+    ObjectivityController = require('./Controllers/ObjectivityController'),
     SentimentController = require('./Controllers/SentimentController');
 
 

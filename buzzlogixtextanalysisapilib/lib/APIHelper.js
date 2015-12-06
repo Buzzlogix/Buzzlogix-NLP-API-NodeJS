@@ -1,7 +1,7 @@
 /**
  * BuzzlogixTextAnalysisAPILib
  *
- * This file was automatically generated for buzzlogix by APIMATIC BETA v2.0 on 11/25/2015
+ * This file was automatically generated for buzzlogix by APIMATIC BETA v2.0 on 12/06/2015
  */
  
 var stream = require('stream');
@@ -131,7 +131,7 @@ var APIHelper = {
 		}
 		for(var key in input) {
 			var value = input[key];
-			if (!value){
+			if (!value  && value!=0){
 				if (input.constructor === Array){input.splice(key, 1)}
 				else delete input[key];
 			} else if (Object.prototype.toString.call(value) === '[object Object]') {

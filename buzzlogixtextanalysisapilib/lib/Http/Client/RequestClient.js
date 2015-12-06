@@ -1,41 +1,50 @@
 /**
- * Created by Kartik Andalam on 9/8/15.
+ * Created by Kartik Andalam on 4/12/15.
  * Copyright (c) 2015 APIMatic. All rights reserved.
  *
  */
 var HttpContext = require("./HttpContext");
 var HttpResponse = require("../Response/HttpResponse");
-var request = require("request");
 var APIHelper = require('../../APIHelper');
+var request = require("superagent");
+var stream = require('stream');
 
 var convertHttpRequest = function (req) {
-    //Convert to request's version of http request
+    //Convert to superagents's version of http request
+    var newRequest = request(req.method, req.queryUrl);
 
-    var options = {
-        url: req.queryUrl,
-        method: req.method,
-        headers: req.headers
-    };
+    //Set headers
+    newRequest.set(req.headers);
+
     if (req.username) {
-        options.auth = {user:req.username, pass:req.password};
+        newRequest.auth(req.username, req.password)
     }
     if (req.body) {
-        options.body = req.body;
+        newRequest.send(req.body);
     }
     if (req.formData) {
-        options.formData = APIHelper.formDataEncodeObject(req.formData);
+        var flattenedObject = APIHelper.formDataEncodeObject(req.formData);
+        for (var key in flattenedObject) {
+            var value = flattenedObject[key];
+            if (value instanceof stream.Stream) {
+                newRequest.attach(key, value)
+            } else {
+                newRequest.field(key, value)
+            }
+        }
     }
     if (req.form) {
-        options.form = APIHelper.urlEncodeObject(req.form);
-        options.headers["content-type"] = 'application/x-www-form-urlencoded';
+        console.log(APIHelper.urlEncodeObject(req.form));
+        newRequest.send(APIHelper.urlEncodeObject(req.form));
+        newRequest.set('content-type', 'application/x-www-form-urlencoded');
     }
-    return options;
+    return newRequest;
 }
 
 var convertHttpResponse = function (resp) {
     var response = new HttpResponse();
-    if(resp) {
-        response.body = resp.body;
+    if (resp) {
+        response.body = resp.text;
         response.headers = resp.headers;
         response.statusCode = resp.statusCode;
     }
@@ -56,14 +65,19 @@ function executeRequest(req, callback) {
     context.request = req;
 
     //Make a temp callback
-    var internalCallback = function cb(error, res, body) {
+    var internalCallback = function cb(error, res) {
         var response = convertHttpResponse(res);
         context.response = response;
-        callback(error, response, context);
+        var err;
+        if (error && !error.status) {
+            //Network error
+            err = error;
+        }
+        callback(err, response, context);
     };
 
     //Make the request;
-    request(convertedRequest,internalCallback);
+    convertedRequest.end(internalCallback);
 
 }
 module.exports = executeRequest;
